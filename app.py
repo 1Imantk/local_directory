@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
-from models import Business, directory
+from models import Business
+from data import directory
 
 app = Flask(__name__)
 app.secret_key = "business_dir_secret_key"
