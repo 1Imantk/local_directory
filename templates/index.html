@@ -98,6 +98,9 @@
   <div class="card" style="border-left: 4px solid {{ cat_colors.get(b.category, '#607d8b') }};">
     <h3><a href="{{ url_for('business_detail', business_id=b.id) }}" style="color:#1a237e; text-decoration:none;">{{ b.name }}</a></h3>
     <div class="meta">
+      <span class="badge" style="background:{{ '#43a047' if b.is_open else '#d32f2f' }};">
+        {{ '🟢 Open' if b.is_open else '🔴 Closed' }}
+      </span>
       <span class="badge">{{ b.category }}</span>
       {% if b.founded_year %}<span class="badge" style="background:#7b1fa2;">Est. {{ b.founded_year }}</span>{% endif %}
       📍 {{ b.location }} &nbsp;|&nbsp; 🕑 {{ b.registered_at }}

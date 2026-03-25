@@ -15,6 +15,7 @@ class Business:
         self.founded_year = founded_year
         self.website = website
         self.ratings = []
+        self.is_open = True
         self.registered_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     def add_rating(self, stars):
@@ -44,6 +45,7 @@ class Business:
             "ratings": list(self.ratings),
             "average_rating": self.get_average_rating(),
             "rating_count": len(self.ratings),
+            "is_open": self.is_open,
             "registered_at": self.registered_at,
         }
 
