@@ -40,9 +40,10 @@
       </div>
 
       <div class="form-group">
-        <label for="description">Description *</label>
+        <label for="description">Description * <span id="charCount" style="font-weight:normal; color:#666;">(0/200)</span></label>
         <textarea id="description" name="description"
-                  placeholder="What does this business do?" required></textarea>
+                  placeholder="What does this business do?" required
+                  maxlength="200" oninput="updateCharCount()"></textarea>
       </div>
 
       <div class="form-group">
@@ -71,5 +72,14 @@
     </form>
   </div>
 </div>
+
+<script>
+function updateCharCount() {
+  var desc = document.getElementById('description');
+  var counter = document.getElementById('charCount');
+  counter.textContent = '(' + desc.value.length + '/200)';
+  counter.style.color = desc.value.length >= 180 ? '#d32f2f' : '#666';
+}
+</script>
 
 {% endblock %}
