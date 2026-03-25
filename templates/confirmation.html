@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Registration Successful — BizDirectory NG{% endblock %}
+
+{% block content %}
+
+<div style="max-width:600px; margin:0 auto; text-align:center;">
+  <div style="font-size:4rem; margin-bottom:1rem;">✅</div>
+  <h2 style="color:#2e7d32; margin-bottom:.5rem;">Business Registered Successfully!</h2>
+  <p style="color:#555; margin-bottom:2rem;">Thank you for registering your business with BizDirectory NG.</p>
+
+  <div class="card" style="text-align:left;">
+    <h3 style="color:#1a237e; margin-bottom:1rem;">{{ business.name }}</h3>
+    <div class="meta">
+      <span class="badge">{{ business.category }}</span>
+      {% if business.founded_year %}<span class="badge" style="background:#7b1fa2;">Est. {{ business.founded_year }}</span>{% endif %}
+      📍 {{ business.location }}
+    </div>
+    <p style="margin-top:1rem;">{{ business.description }}</p>
+    <p class="contact">📞 {{ business.contact }}</p>
+    {% if business.website %}<p>🌐 <a href="{{ business.website }}" target="_blank">{{ business.website }}</a></p>{% endif %}
+  </div>
+
+  <div style="margin-top:2rem; display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
+    <a href="{{ url_for('index') }}" class="btn btn-primary" style="padding:.8rem 2rem;">🏠 Back to Directory</a>
+    <a href="{{ url_for('add_business') }}" class="btn" style="background:#eee; color:#333; padding:.8rem 2rem;">➕ Add Another Business</a>
+  </div>
+</div>
+
+{% endblock %}

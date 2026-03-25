@@ -84,8 +84,17 @@ def add_business():
         new_business = Business(name, category, location, description, contact, 
                                 founded_year or None, website or None)
         directory.add_business(new_business)
-        flash(f'"{name}" has been added to the directory!', "success")
-        return redirect(url_for("index"))
+        
+        business_data = {
+            "name": name,
+            "category": category,
+            "location": location,
+            "description": description,
+            "contact": contact,
+            "founded_year": founded_year or None,
+            "website": website or None,
+        }
+        return render_template("confirmation.html", business=business_data)
 
     return render_template("add.html")
 
