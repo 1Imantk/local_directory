@@ -78,6 +78,7 @@
     </div>
     <p>{{ b.description }}</p>
     <p class="contact">📞 {{ b.contact }}</p>
+    {% if b.website %}<p>🌐 <a href="{{ b.website }}" target="_blank">{{ b.website }}</a></p>{% endif %}
     <div style="margin-top:.8rem;">
       <form method="POST"
             action="{{ url_for('delete_business', index=loop.index0) }}"

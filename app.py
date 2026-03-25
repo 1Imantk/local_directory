@@ -60,13 +60,14 @@ def add_business():
         description = request.form.get("description", "").strip()
         contact = request.form.get("contact", "").strip()
         founded_year = request.form.get("founded_year", "").strip()
+        website = request.form.get("website", "").strip()
 
         if not all([name, category, location, description, contact]):
             flash("All fields are required.", "error")
             return redirect(url_for("add_business"))
 
         new_business = Business(name, category, location, description, contact, 
-                                founded_year or None)
+                                founded_year or None, website or None)
         directory.add_business(new_business)
         flash(f'"{name}" has been added to the directory!', "success")
         return redirect(url_for("index"))
