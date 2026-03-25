@@ -58,19 +58,33 @@
 <form method="GET" action="{{ url_for('index') }}" style="margin-bottom:1rem; display:flex; gap:.5rem;">
   <input type="text" name="q" placeholder="Search businesses by name..." 
          value="{{ search_query | default('') }}" style="flex:1; padding:.6rem; border:1px solid #ccc; border-radius:4px;">
+  <input type="hidden" name="sort" value="{{ sort_by | default('newest') }}">
   <button type="submit" class="btn">🔍 Search</button>
   {% if search_query %}<a href="{{ url_for('index') }}" class="btn btn-secondary">Clear</a>{% endif %}
 </form>
 
+<!-- Sort and filter row -->
+<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; flex-wrap:wrap; gap:.5rem;">
+  <div class="section-title" style="margin:0;">🏢 All Businesses</div>
+  <form method="GET" action="{{ url_for('index') }}">
+    <input type="hidden" name="q" value="{{ search_query | default('') }}">
+    <label style="font-size:.9rem; margin-right:.5rem;">Sort by:</label>
+    <select name="sort" onchange="this.form.submit()" style="padding:.4rem; border:1px solid #ccc; border-radius:4px;">
+      <option value="newest" {% if sort_by == 'newest' %}selected{% endif %}>Newest First</option>
+      <option value="oldest" {% if sort_by == 'oldest' %}selected{% endif %}>Oldest First</option>
+      <option value="az" {% if sort_by == 'az' %}selected{% endif %}>A-Z</option>
+    </select>
+  </form>
+</div>
+
 <!-- Category filter pills -->
-<div class="section-title">🏢 All Businesses</div>
 <div class="pills">
-  <a href="{{ url_for('index') }}"
+  <a href="{{ url_for('index') }}{% if sort_by %}?sort={{ sort_by }}{% endif %}"
      class="pill {% if not active_category is defined or not active_category %}active{% endif %}">
     All
   </a>
   {% for cat in categories %}
-  <a href="{{ url_for('by_category', category_name=cat) }}"
+  <a href="{{ url_for('by_category', category_name=cat, sort=sort_by) }}"
      class="pill {% if active_category is defined and active_category == cat %}active{% endif %}">
     {{ cat }}
   </a>

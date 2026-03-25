@@ -10,10 +10,18 @@ app.secret_key = "business_dir_secret_key"
 @app.route("/")
 def index():
     search_query = request.args.get("q", "").strip().lower()
+    sort_by = request.args.get("sort", "newest")
     all_businesses = [b.to_dict() for b in directory.get_all()]
     
     if search_query:
         all_businesses = [b for b in all_businesses if search_query in b["name"].lower()]
+    
+    if sort_by == "oldest":
+        all_businesses = sorted(all_businesses, key=lambda b: b["registered_at"])
+    elif sort_by == "az":
+        all_businesses = sorted(all_businesses, key=lambda b: b["name"].lower())
+    else:
+        all_businesses = sorted(all_businesses, key=lambda b: b["registered_at"], reverse=True)
     
     recent = [b.to_dict() for b in directory.get_recent()]
     categories = directory.get_categories()
@@ -29,6 +37,7 @@ def index():
         total=directory.total_count(),
         can_undo=can_undo,
         search_query=request.args.get("q", ""),
+        sort_by=sort_by,
     )
 
 
