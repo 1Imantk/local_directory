@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Page Not Found — BizDirectory NG{% endblock %}
+
+{% block content %}
+
+<div style="max-width:600px; margin:0 auto; text-align:center; padding:3rem 0;">
+  <div style="font-size:6rem; margin-bottom:1rem;">🔍</div>
+  <h1 style="color:#1a237e; margin-bottom:.5rem;">404 - Page Not Found</h1>
+  <p style="color:#555; font-size:1.1rem; margin-bottom:2rem;">
+    Sorry, the page you're looking for doesn't exist.<br>
+    It may have been moved or deleted.
+  </p>
+  <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
+    <a href="{{ url_for('index') }}" class="btn btn-primary" style="padding:.8rem 2rem;">
+      🏠 Back to Directory
+    </a>
+    <a href="{{ url_for('add_business') }}" class="btn" style="background:#eee; color:#333; padding:.8rem 2rem;">
+      ➕ Add a Business
+    </a>
+  </div>
+</div>
+
+{% endblock %}
