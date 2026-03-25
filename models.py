@@ -109,6 +109,12 @@ class BusinessDirectory:
     def get_categories(self):
         return sorted(set(b.category for b in self._businesses))
 
+    def get_category_counts(self):
+        counts = {}
+        for b in self._businesses:
+            counts[b.category] = counts.get(b.category, 0) + 1
+        return dict(sorted(counts.items()))
+
 
 # ── Pre-load sample data ──────────────────────────────────────────────────────
 

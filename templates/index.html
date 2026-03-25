@@ -19,6 +19,17 @@
   </div>
 </div>
 
+<!-- Category summary -->
+<div class="section-title">📊 Businesses per Category</div>
+<div class="grid" style="margin-bottom:2rem;">
+  {% for category, count in category_counts.items() %}
+  <div class="card" style="text-align:center; padding:1.5rem;">
+    <div style="font-size:2rem; font-weight:bold; color:#1a237e;">{{ count }}</div>
+    <div class="label">{{ category }}</div>
+  </div>
+  {% endfor %}
+</div>
+
 <!-- Undo button (Stack) -->
 {% if can_undo %}
 <form method="POST" action="{{ url_for('undo_delete') }}" style="margin-bottom:1rem;">

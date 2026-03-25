@@ -17,6 +17,7 @@ def index():
     
     recent = [b.to_dict() for b in directory.get_recent()]
     categories = directory.get_categories()
+    category_counts = directory.get_category_counts()
     can_undo = directory.can_undo()
 
     return render_template(
@@ -24,6 +25,7 @@ def index():
         businesses=all_businesses,
         recent=recent,
         categories=categories,
+        category_counts=category_counts,
         total=directory.total_count(),
         can_undo=can_undo,
         search_query=request.args.get("q", ""),
