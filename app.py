@@ -68,6 +68,10 @@ def add_business():
             flash("All fields are required.", "error")
             return redirect(url_for("add_business"))
 
+        if directory.name_exists(name):
+            flash(f'A business named "{name}" already exists. Please use a different name.', "error")
+            return redirect(url_for("add_business"))
+
         new_business = Business(name, category, location, description, contact, 
                                 founded_year or None, website or None)
         directory.add_business(new_business)

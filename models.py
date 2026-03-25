@@ -84,6 +84,9 @@ class BusinessDirectory:
     def get_all(self):
         return list(self._businesses)
 
+    def name_exists(self, name):
+        return any(b.name.lower() == name.lower() for b in self._businesses)
+
     def get_recent(self):
         """Return recently added businesses (Queue contents, newest last)."""
         return list(self._recent_queue)
