@@ -150,6 +150,25 @@ def edit_business(business_id):
     return render_template("edit.html", business=business.to_dict())
 
 
+# ── Rate a business ─────────────────────────────────────────────────────────
+
+@app.route("/rate/<int:business_id>", methods=["POST"])
+def rate_business(business_id):
+    business = directory.get_by_id(business_id)
+    if not business:
+        flash("Business not found.", "error")
+        return redirect(url_for("index"))
+    
+    stars = request.form.get("stars", type=int)
+    if stars and 1 <= stars <= 5:
+        business.add_rating(stars)
+        flash(f'Thank you! You rated "{business.name}" {stars} star{"s" if stars > 1 else ""}.', "success")
+    else:
+        flash("Please select a valid rating (1-5 stars).", "error")
+    
+    return redirect(url_for("business_detail", business_id=business_id))
+
+
 # ── Delete a business ─────────────────────────────────────────────────────────
 
 @app.route("/delete/<int:business_id>", methods=["POST"])

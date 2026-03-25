@@ -14,7 +14,17 @@ class Business:
         self.contact = contact
         self.founded_year = founded_year
         self.website = website
+        self.ratings = []
         self.registered_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    def add_rating(self, stars):
+        if 1 <= stars <= 5:
+            self.ratings.append(stars)
+
+    def get_average_rating(self):
+        if not self.ratings:
+            return 0
+        return sum(self.ratings) / len(self.ratings)
 
     def get_summary(self):
         """Return a short one-line summary of the business."""
@@ -31,6 +41,9 @@ class Business:
             "contact": self.contact,
             "founded_year": self.founded_year,
             "website": self.website,
+            "ratings": list(self.ratings),
+            "average_rating": self.get_average_rating(),
+            "rating_count": len(self.ratings),
             "registered_at": self.registered_at,
         }
 

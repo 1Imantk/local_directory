@@ -15,6 +15,12 @@
       <span class="badge">{{ business.category }}</span>
       {% if business.founded_year %}<span class="badge" style="background:#7b1fa2;">Est. {{ business.founded_year }}</span>{% endif %}
       📍 {{ business.location }}
+      {% if business.rating_count > 0 %}
+      <span style="color:#f9a825;">
+        {% for i in range(5) %}{% if i < business.average_rating|int %}★{% else %}☆{% endif %}{% endfor %}
+        ({{ "%.1f"|format(business.average_rating) }})
+      </span>
+      {% endif %}
     </div>
 
     <hr style="border:0; border-top:1px solid #eee; margin:1rem 0;">
@@ -40,6 +46,20 @@
         <p style="margin:0;">🕑 {{ business.registered_at }}</p>
       </div>
     </div>
+  </div>
+
+  <div class="card" style="margin-top:1.5rem;">
+    <h3 style="margin-bottom:1rem; color:#1a237e;">⭐ Rate This Business</h3>
+    <form method="POST" action="{{ url_for('rate_business', business_id=business.id) }}" style="display:flex; align-items:center; gap:1rem; flex-wrap:wrap;">
+      <div class="star-rating" style="display:flex; gap:.3rem;">
+        {% for i in range(1, 6) %}
+        <button type="submit" name="stars" value="{{ i }}" class="star-btn" title="{{ i }} star{{ 's' if i > 1 else '' }}">
+          ☆
+        </button>
+        {% endfor %}
+      </div>
+      <span style="color:#666; font-size:.9rem;">Click a star to rate</span>
+    </form>
   </div>
 
   <div style="margin-top:1.5rem; display:flex; gap:1rem; flex-wrap:wrap;">

@@ -101,6 +101,12 @@
       <span class="badge">{{ b.category }}</span>
       {% if b.founded_year %}<span class="badge" style="background:#7b1fa2;">Est. {{ b.founded_year }}</span>{% endif %}
       📍 {{ b.location }} &nbsp;|&nbsp; 🕑 {{ b.registered_at }}
+      {% if b.rating_count is defined and b.rating_count > 0 %}
+      <span style="color:#f9a825; margin-left:.3rem;">
+        {% for i in range(5) %}{% if i < (b.average_rating|int) %}★{% else %}☆{% endif %}{% endfor %}
+        ({{ "%.1f"|format(b.average_rating) }})
+      </span>
+      {% endif %}
     </div>
     <p>{{ b.description }}</p>
     <p class="contact">📞 {{ b.contact }}</p>
