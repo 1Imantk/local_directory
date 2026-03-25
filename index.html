@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block title %}Home — BizDirectory NG{% endblock %}
+
+{% block content %}
+
+<!-- Stat strip -->
+<div class="stat-strip">
+  <div class="stat-box">
+    <div class="number">{{ total }}</div>
+    <div class="label">Businesses Listed</div>
+  </div>
+  <div class="stat-box">
+    <div class="number">{{ categories | length }}</div>
+    <div class="label">Categories</div>
+  </div>
+  <div class="stat-box">
+    <div class="number">{{ recent | length }}</div>
+    <div class="label">Recently Added</div>
+  </div>
+</div>
+
+<!-- Undo button (Stack) -->
+{% if can_undo %}
+<form method="POST" action="{{ url_for('undo_delete') }}" style="margin-bottom:1rem;">
+  <button class="btn btn-warning">↩ Undo Last Delete</button>
+</form>
+{% endif %}
+
+<!-- Recently Added section (Queue) -->
+<div class="section-title">🕐 Recently Added (Queue — FIFO)</div>
+<div class="grid" style="margin-bottom:2rem;">
+  {% for b in recent | reverse %}
+  <div class="card" style="border-left: 4px solid #43a047;">
+    <h3>{{ b.name }}</h3>
+    <div class="meta">
+      <span class="badge">{{ b.category }}</span>
+      📍 {{ b.location }} &nbsp;|&nbsp; 🕑 {{ b.registered_at }}
+    </div>
+    <p>{{ b.description }}</p>
+  </div>
+  {% else %}
+  <p style="color:#888;">No businesses yet.</p>
+  {% endfor %}
+</div>
+
+<!-- Category filter pills -->
+<div class="section-title">🏢 All Businesses</div>
+<div class="pills">
+  <a href="{{ url_for('index') }}"
+     class="pill {% if not active_category is defined or not active_category %}active{% endif %}">
+    All
+  </a>
+  {% for cat in categories %}
+  <a href="{{ url_for('by_category', category_name=cat) }}"
+     class="pill {% if active_category is defined and active_category == cat %}active{% endif %}">
+    {{ cat }}
+  </a>
+  {% endfor %}
+</div>
+
+<!-- Business cards grid -->
+<div class="grid">
+  {% for b in businesses %}
+  <div class="card">
+    <h3>{{ b.name }}</h3>
+    <div class="meta">
+      <span class="badge">{{ b.category }}</span>
+      📍 {{ b.location }} &nbsp;|&nbsp; 🕑 {{ b.registered_at }}
+    </div>
+    <p>{{ b.description }}</p>
+    <p class="contact">📞 {{ b.contact }}</p>
+    <div style="margin-top:.8rem;">
+      <form method="POST"
+            action="{{ url_for('delete_business', index=loop.index0) }}"
+            style="display:inline;"
+            onsubmit="return confirm('Delete {{ b.name }}?')">
+        <button class="btn btn-danger btn-sm">🗑 Delete</button>
+      </form>
+    </div>
+  </div>
+  {% else %}
+  <p style="color:#888; grid-column:1/-1;">No businesses found in this category.</p>
+  {% endfor %}
+</div>
+
+{% endblock %}

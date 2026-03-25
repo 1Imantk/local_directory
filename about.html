@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}About — BizDirectory NG{% endblock %}
+
+{% block content %}
+
+<div style="max-width:700px; margin:0 auto;">
+  <h2 style="color:#1a237e; margin-bottom:1rem;">About BizDirectory NG</h2>
+
+  <div class="card">
+    <p style="line-height:1.7; margin-bottom:1rem;">
+      <strong>BizDirectory NG</strong> is a local business and startup directory built for
+      communities across Nigeria. It helps residents discover local services, supports
+      small business owners by giving them online visibility, and demonstrates core
+      computer-science concepts in a real-world Flask web application.
+    </p>
+
+    <div class="section-title">Technical Highlights</div>
+    <ul style="padding-left:1.4rem; line-height:2; font-size:.92rem;">
+      <li><strong>OOP:</strong> Each business is modelled as a <code>Business</code> object
+          with attributes and behaviour methods (<code>get_summary()</code>,
+          <code>to_dict()</code>).</li>
+      <li><strong>Queue (FIFO):</strong> A <code>collections.deque</code> tracks the 5 most
+          recently added businesses — new items enter at the back, old ones leave from the
+          front.</li>
+      <li><strong>Stack (LIFO):</strong> Deleted businesses are pushed onto a stack so the
+          last deletion can be undone by popping it back off.</li>
+      <li><strong>datetime API:</strong> Every registered business is timestamped using
+          Python's built-in <code>datetime</code> module.</li>
+      <li><strong>Flask:</strong> Multiple routes handle viewing, filtering by category,
+          adding, deleting, and undoing — all wired to HTML templates via Jinja2.</li>
+    </ul>
+  </div>
+
+  <div class="card" style="margin-top:1rem;">
+    <div class="section-title">Built for</div>
+    <p style="font-size:.9rem; line-height:1.6;">
+      COS 202 — Building for the Web with Flask<br>
+      Maryam Abacha American University of Nigeria (MAAUN)<br>
+      Instructor: Engr. Hassan Yau Hamisu
+    </p>
+  </div>
+</div>
+
+{% endblock %}

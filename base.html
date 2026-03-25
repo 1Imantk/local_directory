@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{% block title %}Local Business Directory{% endblock %}</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f4f6f9;
+      color: #333;
+      min-height: 100vh;
+    }
+
+    /* ── Nav ── */
+    nav {
+      background: #1a237e;
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 60px;
+    }
+    nav .brand { color: #fff; font-size: 1.2rem; font-weight: 700; text-decoration: none; }
+    nav ul { list-style: none; display: flex; gap: 1.5rem; }
+    nav ul a { color: #c5cae9; text-decoration: none; font-size: 0.95rem; transition: color .2s; }
+    nav ul a:hover { color: #fff; }
+
+    /* ── Layout ── */
+    .container { max-width: 1100px; margin: 2rem auto; padding: 0 1.5rem; }
+
+    /* ── Flash messages ── */
+    .flash { padding: .8rem 1.2rem; border-radius: 6px; margin-bottom: 1rem; font-size: .9rem; }
+    .flash.success { background: #e8f5e9; color: #2e7d32; border-left: 4px solid #43a047; }
+    .flash.error   { background: #ffebee; color: #c62828; border-left: 4px solid #e53935; }
+    .flash.warning { background: #fff8e1; color: #f57f17; border-left: 4px solid #ffb300; }
+
+    /* ── Cards ── */
+    .card {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,.08);
+      padding: 1.4rem 1.6rem;
+      margin-bottom: 1rem;
+    }
+    .card h3 { font-size: 1.05rem; color: #1a237e; margin-bottom: .3rem; }
+    .card .meta { font-size: .8rem; color: #888; margin-bottom: .5rem; }
+    .card p { font-size: .9rem; line-height: 1.5; }
+    .card .contact { font-size: .85rem; color: #555; margin-top: .4rem; }
+
+    /* ── Badge ── */
+    .badge {
+      display: inline-block;
+      background: #e8eaf6;
+      color: #3949ab;
+      font-size: .72rem;
+      padding: .2rem .6rem;
+      border-radius: 20px;
+      font-weight: 600;
+      margin-right: .3rem;
+    }
+
+    /* ── Buttons ── */
+    .btn {
+      display: inline-block;
+      padding: .5rem 1.1rem;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      font-size: .88rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: opacity .2s;
+    }
+    .btn:hover { opacity: .85; }
+    .btn-primary  { background: #1a237e; color: #fff; }
+    .btn-danger   { background: #e53935; color: #fff; }
+    .btn-warning  { background: #ffb300; color: #333; }
+    .btn-success  { background: #43a047; color: #fff; }
+    .btn-sm { padding: .3rem .8rem; font-size: .8rem; }
+
+    /* ── Section headings ── */
+    .section-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #1a237e;
+      border-bottom: 2px solid #e8eaf6;
+      padding-bottom: .4rem;
+      margin-bottom: 1rem;
+    }
+
+    /* ── Stat strip ── */
+    .stat-strip {
+      display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.5rem;
+    }
+    .stat-box {
+      background: #fff;
+      border-radius: 8px;
+      padding: .8rem 1.4rem;
+      box-shadow: 0 1px 4px rgba(0,0,0,.08);
+      text-align: center;
+      flex: 1; min-width: 120px;
+    }
+    .stat-box .number { font-size: 1.8rem; font-weight: 700; color: #1a237e; }
+    .stat-box .label  { font-size: .78rem; color: #888; }
+
+    /* ── Filter pills ── */
+    .pills { display: flex; gap: .5rem; flex-wrap: wrap; margin-bottom: 1.2rem; }
+    .pill {
+      padding: .35rem .9rem;
+      border-radius: 20px;
+      font-size: .82rem;
+      text-decoration: none;
+      background: #e8eaf6;
+      color: #3949ab;
+      font-weight: 600;
+      transition: background .2s;
+    }
+    .pill:hover, .pill.active { background: #1a237e; color: #fff; }
+
+    /* ── Grid ── */
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1rem; }
+
+    /* ── Form ── */
+    .form-group { margin-bottom: 1rem; }
+    .form-group label { display: block; font-size: .88rem; font-weight: 600; margin-bottom: .35rem; }
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: .6rem .9rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: .92rem;
+      font-family: inherit;
+      transition: border-color .2s;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus { border-color: #1a237e; outline: none; }
+    .form-group textarea { resize: vertical; min-height: 90px; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="brand" href="{{ url_for('index') }}">📋 BizDirectory NG</a>
+  <ul>
+    <li><a href="{{ url_for('index') }}">Home</a></li>
+    <li><a href="{{ url_for('add_business') }}">+ Add Business</a></li>
+    <li><a href="{{ url_for('about') }}">About</a></li>
+  </ul>
+</nav>
+
+<div class="container">
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% for category, message in messages %}
+      <div class="flash {{ category }}">{{ message }}</div>
+    {% endfor %}
+  {% endwith %}
+
+  {% block content %}{% endblock %}
+</div>
+
+</body>
+</html>
