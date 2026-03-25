@@ -1,6 +1,6 @@
 # BizDirectory NG — Local Business & Startup Directory
 
-A Flask web application that lets users **view**, **add**, **filter**, and **delete**
+A Flask web application that lets users **view**, **add**, **edit**, **rate**, and **delete**
 local businesses and startups across Nigeria.
 
 Built as Assignment 4 for **COS 202 — Building for the Web with Flask**  
@@ -12,23 +12,35 @@ Maryam Abacha American University of Nigeria (MAAUN)
 
 | Feature | Description |
 |---|---|
-| 📋 View all businesses | See every listed business in a card grid |
+| 📋 View all businesses | See every listed business in a card grid with colored category borders |
+| 🔍 Search by name | Filter businesses by typing a name in the search bar |
+| ↕ Sort businesses | Sort by Newest First, Oldest First, or A-Z |
+| 📄 Pagination | Browse businesses 6 at a time with page navigation |
 | 🕐 Recently Added | A live FIFO queue shows the 5 most recently added businesses |
-| ➕ Add a business | Fill in a form to register a new business with a timestamp |
-| 🔍 Filter by category | Click a category pill to filter the list |
+| 📊 Category Summary | View total number of businesses per category |
+| 🏷️ Filter by category | Click a category pill to filter the list |
+| ⭐ Rate businesses | Submit a 1–5 star rating for each business |
+| 🟢 Open/Closed Status | Toggle and display business operational status |
+| ➕ Add a business | Register a new business with validation and confirmation page |
+| ✏️ Edit a business | Update any business's details via a dedicated edit form |
+| 📄 Business detail page | View full details at `/business/<id>` |
 | 🗑 Delete | Remove a business from the directory |
 | ↩ Undo Delete | Restore the last deleted business (uses a Stack / LIFO) |
 | ℹ️ About | Explains the technical concepts used in the app |
+| ❓ 404 Page | Custom error page with helpful links |
 
 ---
 
 ## Technical Concepts Demonstrated
 
-- **OOP** — `Business` class with `__init__`, `get_summary()`, and `to_dict()` methods  
-- **Queue (FIFO)** — `collections.deque` tracks the 5 most recently added businesses  
-- **Stack (LIFO)** — a list used as a stack enables undo-delete functionality  
-- **datetime API** — every business is automatically timestamped on registration  
-- **Flask** — 6 routes connect Python logic to HTML templates via Jinja2 forms  
+- **OOP** — `Business` class with attributes and methods (`get_summary()`, `to_dict()`)
+- **Queue (FIFO)** — `collections.deque` tracks the 5 most recently added businesses
+- **Stack (LIFO)** — a list used as a stack enables undo-delete functionality
+- **datetime API** — every business is automatically timestamped on registration
+- **Flask** — Multiple routes connect Python logic to HTML templates via Jinja2
+- **Form Validation** — Duplicate name prevention, required fields, and URL validation
+- **Auto-incrementing IDs** — Each business gets a unique ID for detail/edit/delete routes
+- **Unit Testing** — Queue and Stack logic tested with print-based assertions
 
 ---
 
@@ -41,7 +53,7 @@ Follow these steps exactly. You only need Python installed on your computer.
 If you have Git:
 ```bash
 git clone https://github.com/1Imantk/local_directory.git
-cd business_directory
+cd local_directory
 ```
 
 Or download the ZIP from GitHub and unzip it, then open a terminal inside the folder.
@@ -89,7 +101,13 @@ You should see something like:
 
 Go to **http://127.0.0.1:5000** and the app will load.
 
-### Step 7 — Stop the app
+### Step 7 — Run unit tests
+
+```bash
+python models_test.py
+```
+
+### Step 8 — Stop the app
 
 Press `Ctrl + C` in the terminal.
 
@@ -98,16 +116,22 @@ Press `Ctrl + C` in the terminal.
 ## Project Structure
 
 ```
-business_directory/
-├── app.py              # Flask routes
+local_directory/
+├── app.py              # Flask routes (home, add, edit, delete, rate, toggle status, etc.)
 ├── models.py           # OOP classes (Business, BusinessDirectory)
+├── data.py             # Sample business data
+├── models_test.py      # Unit tests for Queue and Stack logic
 ├── requirements.txt    # Python dependencies
 ├── README.md           # This file
 └── templates/
-    ├── base.html       # Shared layout (nav, flash messages, CSS)
-    ├── index.html      # Home page — business grid + queue + filters
-    ├── add.html        # Add business form
-    └── about.html      # About page
+    ├── base.html       # Shared layout (nav, footer, flash messages, CSS)
+    ├── index.html      # Home page — business grid, search, filters, pagination
+    ├── add.html        # Add business form with character counter
+    ├── edit.html       # Edit business form
+    ├── confirmation.html # Registration success page
+    ├── business_detail.html # Full business details with rating & status toggle
+    ├── about.html      # About page
+    └── 404.html        # Custom 404 error page
 ```
 
 ---
