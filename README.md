@@ -40,7 +40,7 @@ Follow these steps exactly. You only need Python installed on your computer.
 
 If you have Git:
 ```bash
-git clone https://github.com/YOUR_USERNAME/business_directory.git
+git clone https://github.com/1Imantk/local_directory.git
 cd business_directory
 ```
 
@@ -114,4 +114,4 @@ business_directory/
 
 ## Author
 
-**Khaleel** — COS 202 Student, MAAUN
+**Iman Rabiu** — COS 202 Student, MAAUN

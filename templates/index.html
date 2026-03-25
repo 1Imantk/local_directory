@@ -43,6 +43,14 @@
   {% endfor %}
 </div>
 
+<!-- Search bar -->
+<form method="GET" action="{{ url_for('index') }}" style="margin-bottom:1rem; display:flex; gap:.5rem;">
+  <input type="text" name="q" placeholder="Search businesses by name..." 
+         value="{{ search_query | default('') }}" style="flex:1; padding:.6rem; border:1px solid #ccc; border-radius:4px;">
+  <button type="submit" class="btn">🔍 Search</button>
+  {% if search_query %}<a href="{{ url_for('index') }}" class="btn btn-secondary">Clear</a>{% endif %}
+</form>
+
 <!-- Category filter pills -->
 <div class="section-title">🏢 All Businesses</div>
 <div class="pills">
@@ -79,7 +87,9 @@
     </div>
   </div>
   {% else %}
-  <p style="color:#888; grid-column:1/-1;">No businesses found in this category.</p>
+  <p style="color:#888; grid-column:1/-1;">
+    {% if search_query %}No businesses match "{{ search_query }}".{% else %}No businesses found in this category.{% endif %}
+  </p>
   {% endfor %}
 </div>
 

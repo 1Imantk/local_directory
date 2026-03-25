@@ -9,7 +9,12 @@ app.secret_key = "business_dir_secret_key"
 
 @app.route("/")
 def index():
+    search_query = request.args.get("q", "").strip().lower()
     all_businesses = [b.to_dict() for b in directory.get_all()]
+    
+    if search_query:
+        all_businesses = [b for b in all_businesses if search_query in b["name"].lower()]
+    
     recent = [b.to_dict() for b in directory.get_recent()]
     categories = directory.get_categories()
     can_undo = directory.can_undo()
@@ -21,6 +26,7 @@ def index():
         categories=categories,
         total=directory.total_count(),
         can_undo=can_undo,
+        search_query=request.args.get("q", ""),
     )
 
 
