@@ -73,6 +73,7 @@
     <h3>{{ b.name }}</h3>
     <div class="meta">
       <span class="badge">{{ b.category }}</span>
+      {% if b.founded_year %}<span class="badge" style="background:#7b1fa2;">Est. {{ b.founded_year }}</span>{% endif %}
       📍 {{ b.location }} &nbsp;|&nbsp; 🕑 {{ b.registered_at }}
     </div>
     <p>{{ b.description }}</p>

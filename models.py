@@ -5,12 +5,13 @@ from collections import deque
 class Business:
     """Represents a local business or startup."""
 
-    def __init__(self, name, category, location, description, contact):
+    def __init__(self, name, category, location, description, contact, founded_year=None):
         self.name = name
         self.category = category
         self.location = location
         self.description = description
         self.contact = contact
+        self.founded_year = founded_year
         self.registered_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     def get_summary(self):
@@ -25,6 +26,7 @@ class Business:
             "location": self.location,
             "description": self.description,
             "contact": self.contact,
+            "founded_year": self.founded_year,
             "registered_at": self.registered_at,
         }
 
@@ -113,19 +115,19 @@ directory = BusinessDirectory()
 sample_data = [
     Business("Kano Tech Hub", "Technology", "Kano, Nigeria",
              "A co-working space and incubator for tech startups in northern Nigeria.",
-             "kanotechhub@gmail.com"),
+             "kanotechhub@gmail.com", 2020),
     Business("FarmConnect NG", "Agriculture", "Zaria, Nigeria",
              "Connecting smallholder farmers directly to urban markets via mobile.",
-             "+234-801-000-0001"),
+             "+234-801-000-0001", 2021),
     Business("MediQuick Pharmacy", "Healthcare", "Kaduna, Nigeria",
              "Fast-delivery pharmacy serving residential estates across Kaduna.",
-             "mediquick@ng.com"),
+             "mediquick@ng.com", 2019),
     Business("EduBridge Tutorials", "Education", "Kano, Nigeria",
              "Affordable JAMB and WAEC preparation centre for secondary school students.",
-             "+234-802-000-0002"),
+             "+234-802-000-0002", 2018),
     Business("GreenBuild Materials", "Construction", "Abuja, Nigeria",
              "Supplier of eco-friendly building materials for modern construction projects.",
-             "greenbuild@abuja.ng"),
+             "greenbuild@abuja.ng", 2022),
 ]
 
 for b in sample_data:
