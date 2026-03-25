@@ -80,7 +80,8 @@
 <!-- Business cards grid -->
 <div class="grid">
   {% for b in businesses %}
-  <div class="card">
+  {% set cat_colors = {'Agriculture':'#4caf50','Construction':'#ff9800','Education':'#2196f3','Entertainment':'#e91e63','Finance':'#009688','Food & Dining':'#f44336','Healthcare':'#00bcd4','Hospitality':'#9c27b0','Retail':'#ff5722','Technology':'#3f51b5','Transportation':'#795548','Other':'#607d8b'} %}
+  <div class="card" style="border-left: 4px solid {{ cat_colors.get(b.category, '#607d8b') }};">
     <h3>{{ b.name }}</h3>
     <div class="meta">
       <span class="badge">{{ b.category }}</span>
