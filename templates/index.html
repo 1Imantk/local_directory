@@ -96,7 +96,7 @@
   {% for b in businesses %}
   {% set cat_colors = {'Agriculture':'#4caf50','Construction':'#ff9800','Education':'#2196f3','Entertainment':'#e91e63','Finance':'#009688','Food & Dining':'#f44336','Healthcare':'#00bcd4','Hospitality':'#9c27b0','Retail':'#ff5722','Technology':'#3f51b5','Transportation':'#795548','Other':'#607d8b'} %}
   <div class="card" style="border-left: 4px solid {{ cat_colors.get(b.category, '#607d8b') }};">
-    <h3>{{ b.name }}</h3>
+    <h3><a href="{{ url_for('business_detail', business_id=b.id) }}" style="color:#1a237e; text-decoration:none;">{{ b.name }}</a></h3>
     <div class="meta">
       <span class="badge">{{ b.category }}</span>
       {% if b.founded_year %}<span class="badge" style="background:#7b1fa2;">Est. {{ b.founded_year }}</span>{% endif %}
@@ -107,7 +107,7 @@
     {% if b.website %}<p>🌐 <a href="{{ b.website }}" target="_blank">{{ b.website }}</a></p>{% endif %}
     <div style="margin-top:.8rem;">
       <form method="POST"
-            action="{{ url_for('delete_business', index=loop.index0) }}"
+            action="{{ url_for('delete_business', business_id=b.id) }}"
             style="display:inline;"
             onsubmit="return confirm('Delete {{ b.name }}?')">
         <button class="btn btn-danger btn-sm">🗑 Delete</button>

@@ -5,7 +5,8 @@ from collections import deque
 class Business:
     """Represents a local business or startup."""
 
-    def __init__(self, name, category, location, description, contact, founded_year=None, website=None):
+    def __init__(self, name, category, location, description, contact, founded_year=None, website=None, id=None):
+        self.id = id
         self.name = name
         self.category = category
         self.location = location
@@ -22,6 +23,7 @@ class Business:
     def to_dict(self):
         """Convert the Business object to a dictionary for template rendering."""
         return {
+            "id": getattr(self, 'id', None),
             "name": self.name,
             "category": self.category,
             "location": self.location,
@@ -46,11 +48,14 @@ class BusinessDirectory:
         self._recent_queue = deque()   # FIFO — recently added (Queue)
         self._deleted_stack = []       # LIFO — undo delete (Stack)
         self._recent_limit = recent_limit
+        self._next_id = 1
 
     # ── Core operations ──────────────────────────────────────────────
 
     def add_business(self, business: Business):
         """Add a new Business and push it onto the recent queue."""
+        business.id = self._next_id
+        self._next_id += 1
         self._businesses.append(business)
 
         # Queue: enqueue new business; dequeue oldest if limit exceeded
@@ -93,6 +98,12 @@ class BusinessDirectory:
 
     def get_by_category(self, category: str):
         return [b for b in self._businesses if b.category.lower() == category.lower()]
+
+    def get_by_id(self, business_id):
+        for b in self._businesses:
+            if b.id == business_id:
+                return b
+        return None
 
     def total_count(self):
         return len(self._businesses)

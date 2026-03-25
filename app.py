@@ -99,15 +99,27 @@ def add_business():
     return render_template("add.html")
 
 
+# ── Business detail page ──────────────────────────────────────────────────────
+
+@app.route("/business/<int:business_id>")
+def business_detail(business_id):
+    business = directory.get_by_id(business_id)
+    if not business:
+        flash("Business not found.", "error")
+        return redirect(url_for("index"))
+    return render_template("business_detail.html", business=business.to_dict())
+
+
 # ── Delete a business ─────────────────────────────────────────────────────────
 
-@app.route("/delete/<int:index>", methods=["POST"])
-def delete_business(index):
-    removed = directory.delete_business(index)
-    if removed:
-        flash(f'"{removed.name}" was deleted. You can undo this action.', "warning")
-    else:
-        flash("Business not found.", "error")
+@app.route("/delete/<int:business_id>", methods=["POST"])
+def delete_business(business_id):
+    for i, b in enumerate(directory.get_all()):
+        if b.id == business_id:
+            removed = directory.delete_business(i)
+            flash(f'"{removed.name}" was deleted. You can undo this action.', "warning")
+            return redirect(url_for("index"))
+    flash("Business not found.", "error")
     return redirect(url_for("index"))
 
 

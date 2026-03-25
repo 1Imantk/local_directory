@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}{{ business.name }} — BizDirectory NG{% endblock %}
+
+{% block content %}
+
+<div style="max-width:700px; margin:0 auto;">
+  <a href="{{ url_for('index') }}" style="color:#1a237e; text-decoration:none; display:inline-flex; align-items:center; gap:.3rem; margin-bottom:1rem;">
+    ← Back to Directory
+  </a>
+
+  <div class="card" style="border-left: 4px solid {{ cat_colors.get(business.category, '#607d8b') }};">
+    <h1 style="color:#1a237e; margin-bottom:.5rem;">{{ business.name }}</h1>
+    
+    <div class="meta" style="margin-bottom:1rem;">
+      <span class="badge">{{ business.category }}</span>
+      {% if business.founded_year %}<span class="badge" style="background:#7b1fa2;">Est. {{ business.founded_year }}</span>{% endif %}
+      📍 {{ business.location }}
+    </div>
+
+    <hr style="border:0; border-top:1px solid #eee; margin:1rem 0;">
+
+    <div style="margin-bottom:1rem;">
+      <h3 style="font-size:1rem; color:#555; margin-bottom:.5rem;">Description</h3>
+      <p style="line-height:1.7;">{{ business.description }}</p>
+    </div>
+
+    <div style="display:grid; gap:1rem; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); margin-top:1.5rem;">
+      <div>
+        <h3 style="font-size:1rem; color:#555; margin-bottom:.3rem;">Contact</h3>
+        <p class="contact" style="margin:0;">📞 {{ business.contact }}</p>
+      </div>
+      {% if business.website %}
+      <div>
+        <h3 style="font-size:1rem; color:#555; margin-bottom:.3rem;">Website</h3>
+        <p style="margin:0;">🌐 <a href="{{ business.website }}" target="_blank">{{ business.website }}</a></p>
+      </div>
+      {% endif %}
+      <div>
+        <h3 style="font-size:1rem; color:#555; margin-bottom:.3rem;">Registered</h3>
+        <p style="margin:0;">🕑 {{ business.registered_at }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:1.5rem; display:flex; gap:1rem; flex-wrap:wrap;">
+    <form method="POST" action="{{ url_for('delete_business', business_id=business.id) }}"
+          onsubmit="return confirm('Delete {{ business.name }}?')" style="display:inline;">
+      <button class="btn btn-danger">🗑 Delete Business</button>
+    </form>
+    <a href="{{ url_for('index') }}" class="btn">← Back to Directory</a>
+  </div>
+</div>
+
+{% endblock %}
