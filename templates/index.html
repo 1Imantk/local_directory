@@ -130,4 +130,19 @@
   {% endfor %}
 </div>
 
+{% if total_pages > 1 %}
+<div style="display:flex; justify-content:center; gap:.5rem; margin-top:2rem; flex-wrap:wrap;">
+  {% if page > 1 %}
+  <a href="{{ url_for('index', page=page-1, q=search_query, sort=sort_by) }}" class="btn">← Prev</a>
+  {% endif %}
+  {% for p in range(1, total_pages + 1) %}
+  <a href="{{ url_for('index', page=p, q=search_query, sort=sort_by) }}" 
+     class="btn {% if p == page %}btn-primary{% endif %}">{{ p }}</a>
+  {% endfor %}
+  {% if page < total_pages %}
+  <a href="{{ url_for('index', page=page+1, q=search_query, sort=sort_by) }}" class="btn">Next →</a>
+  {% endif %}
+</div>
+{% endif %}
+
 {% endblock %}

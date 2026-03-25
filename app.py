@@ -8,8 +8,11 @@ app.secret_key = "business_dir_secret_key"
 
 # ── Home — view all businesses ────────────────────────────────────────────────
 
+PER_PAGE = 6
+
 @app.route("/")
 def index():
+    page = request.args.get("page", 1, type=int)
     search_query = request.args.get("q", "").strip().lower()
     sort_by = request.args.get("sort", "newest")
     all_businesses = [b.to_dict() for b in directory.get_all()]
@@ -24,6 +27,13 @@ def index():
     else:
         all_businesses = sorted(all_businesses, key=lambda b: b["registered_at"], reverse=True)
     
+    total_businesses = len(all_businesses)
+    total_pages = max(1, (total_businesses + PER_PAGE - 1) // PER_PAGE)
+    page = max(1, min(page, total_pages))
+    start = (page - 1) * PER_PAGE
+    end = start + PER_PAGE
+    businesses = all_businesses[start:end]
+    
     recent = [b.to_dict() for b in directory.get_recent()]
     categories = directory.get_categories()
     category_counts = directory.get_category_counts()
@@ -31,7 +41,7 @@ def index():
 
     return render_template(
         "index.html",
-        businesses=all_businesses,
+        businesses=businesses,
         recent=recent,
         categories=categories,
         category_counts=category_counts,
@@ -39,6 +49,8 @@ def index():
         can_undo=can_undo,
         search_query=request.args.get("q", ""),
         sort_by=sort_by,
+        page=page,
+        total_pages=total_pages,
     )
 
 
