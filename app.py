@@ -110,6 +110,46 @@ def business_detail(business_id):
     return render_template("business_detail.html", business=business.to_dict())
 
 
+# ── Edit a business ───────────────────────────────────────────────────────────
+
+@app.route("/edit/<int:business_id>", methods=["GET", "POST"])
+def edit_business(business_id):
+    business = directory.get_by_id(business_id)
+    if not business:
+        flash("Business not found.", "error")
+        return redirect(url_for("index"))
+
+    if request.method == "POST":
+        name = request.form.get("name", "").strip()
+        category = request.form.get("category", "").strip()
+        location = request.form.get("location", "").strip()
+        description = request.form.get("description", "").strip()
+        contact = request.form.get("contact", "").strip()
+        founded_year = request.form.get("founded_year", "").strip()
+        website = request.form.get("website", "").strip()
+
+        if not all([name, category, location, description, contact]):
+            flash("All fields are required.", "error")
+            return redirect(url_for("edit_business", business_id=business_id))
+
+        existing_name = any(b.name.lower() == name.lower() and b.id != business_id for b in directory.get_all())
+        if existing_name:
+            flash(f'A business named "{name}" already exists. Please use a different name.', "error")
+            return redirect(url_for("edit_business", business_id=business_id))
+
+        updated = directory.update_business(
+            business_id, name, category, location, description, contact,
+            founded_year or None, website or None
+        )
+        if updated:
+            flash(f'"{name}" has been updated successfully!', "success")
+            return redirect(url_for("business_detail", business_id=business_id))
+        flash("Failed to update business.", "error")
+        return redirect(url_for("index"))
+
+    return render_template("edit.html", business=business.to_dict())
+
+
 # ── Delete a business ─────────────────────────────────────────────────────────
 
 @app.route("/delete/<int:business_id>", methods=["POST"])

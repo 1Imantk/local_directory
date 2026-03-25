@@ -73,6 +73,19 @@ class BusinessDirectory:
             return removed
         return None
 
+    def update_business(self, business_id, name, category, location, description, contact, founded_year, website):
+        for b in self._businesses:
+            if b.id == business_id:
+                b.name = name
+                b.category = category
+                b.location = location
+                b.description = description
+                b.contact = contact
+                b.founded_year = founded_year
+                b.website = website
+                return b
+        return None
+
     def undo_delete(self):
         """Pop the last deleted business off the stack and restore it."""
         if self._deleted_stack:

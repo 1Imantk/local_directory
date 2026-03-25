@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block title %}Edit {{ business.name }} — BizDirectory NG{% endblock %}
+
+{% block content %}
+
+<div style="max-width:600px; margin:0 auto;">
+  <a href="{{ url_for('business_detail', business_id=business.id) }}" style="color:#1a237e; text-decoration:none; display:inline-flex; align-items:center; gap:.3rem; margin-bottom:1rem;">
+    ← Back to {{ business.name }}
+  </a>
+
+  <h2 style="margin-bottom:1.5rem; color:#1a237e;">✏️ Edit Business</h2>
+
+  <div class="card">
+    <form method="POST" action="{{ url_for('edit_business', business_id=business.id) }}">
+
+      <div class="form-group">
+        <label for="name">Business Name *</label>
+        <input type="text" id="name" name="name" value="{{ business.name }}" required />
+      </div>
+
+      <div class="form-group">
+        <label for="category">Category *</label>
+        <select id="category" name="category" required>
+          <option value="" disabled>Select a category</option>
+          {% set cats = ['Agriculture','Construction','Education','Entertainment','Finance','Food & Dining','Healthcare','Hospitality','Retail','Technology','Transportation','Other'] %}
+          {% for cat in cats %}
+          <option value="{{ cat }}" {% if business.category == cat %}selected{% endif %}>{{ cat }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="location">Location *</label>
+        <input type="text" id="location" name="location" value="{{ business.location }}" required />
+      </div>
+
+      <div class="form-group">
+        <label for="description">Description * <span id="charCount" style="font-weight:normal; color:#666;">({{ business.description | length }}/200)</span></label>
+        <textarea id="description" name="description" required maxlength="200" oninput="updateCharCount()">{{ business.description }}</textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="contact">Contact (email or phone) *</label>
+        <input type="text" id="contact" name="contact" value="{{ business.contact }}" required />
+      </div>
+
+      <div class="form-group">
+        <label for="founded_year">Founded Year</label>
+        <input type="number" id="founded_year" name="founded_year"
+               value="{{ business.founded_year or '' }}" min="1800" max="2030" />
+      </div>
+
+      <div class="form-group">
+        <label for="website">Website / Social Media URL</label>
+        <input type="url" id="website" name="website" value="{{ business.website or '' }}"
+               placeholder="e.g. https://example.com" />
+      </div>
+
+      <button type="submit" class="btn btn-primary">Save Changes</button>
+      <a href="{{ url_for('business_detail', business_id=business.id) }}" class="btn" style="background:#eee; color:#333; margin-left:.5rem;">
+        Cancel
+      </a>
+
+    </form>
+  </div>
+</div>
+
+<script>
+function updateCharCount() {
+  var desc = document.getElementById('description');
+  var counter = document.getElementById('charCount');
+  counter.textContent = '(' + desc.value.length + '/200)';
+  counter.style.color = desc.value.length >= 180 ? '#d32f2f' : '#666';
+}
+</script>
+
+{% endblock %}
